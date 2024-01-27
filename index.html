@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <title>パスワードメーカー</title>
+</head>
+<body class="bg-light">
+  <div class="container" id="app">
+    <div class="row">
+      <div class="col-8 offset-2 bg-white pt-5 pb-5 mt-5">
+
+        <h1 class="text-center fs-4 text">パスワードメーカー</h1>
+        <input type="text" class="form-control text-center mt-5" :value="password" readonly>
+
+        <div class="row mt-5">
+          <div class="col-10 offset-1">
+            <h2 class="fs-6 text">カスタマイズ</h2>
+            <div class="row">
+              <div class="col-6">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" role="switch" id="big_alpha" v-model="big_alpha">
+                  <label class="form-check-label" for="big_alpha">英大文字</label>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" role="switch" id="small_alpha" v-model="small_alpha">
+                  <label class="form-check-label" for="small_alpha">英小文字</label>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" role="switch" id="numbers" v-model="numbers">
+                  <label class="form-check-label" for="numbers">数字</label>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" role="switch" id="symbols" v-model="symbols">
+                  <label class="form-check-label" for="symbols">記号</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    
+        <div class="d-flex justify-content-center mt-3">
+          <label for="length" class="col-form-label">文字数</label>
+          <div class="ms-3">
+            <input type="number" id="length" class="form-control text-center" v-model="length">
+          </div>
+        </div>
+    
+      </div>
+    </div>
+  </div>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script>
+    const myApp = {
+      data() {
+        return {
+          big_alpha: true,
+          small_alpha: true,
+          numbers: true,
+          symbols: true,
+          length: 10
+        }
+      },
+      computed: {
+        password() {
+          const big_alpha_string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+          const small_alpha_string = 'abcdefghijklmnopqrstuvwxtz'
+          const numbers_string = '123456789'
+          const symbols_string = '!@#$%&*^()'
+
+          let source = ''
+          source += (this.big_alpha ? big_alpha_string : '')
+          source += (this.small_alpha ? small_alpha_string : '')
+          source += (this.numbers ? numbers_string : '')
+          source += (this.symbols ? symbols_string : '')
+          if (source === '') return '-'
+
+          let ret = ''
+          for (let i=0; i<this.length; i++) {
+            let rand = Math.floor(Math.random() * source.length)
+            ret += source.substr(rand, 1)
+          }
+          return ret
+        }
+      }
+    }
+
+    Vue.createApp(myApp).mount('#app')
+  </script>
+</body>
+</html>
